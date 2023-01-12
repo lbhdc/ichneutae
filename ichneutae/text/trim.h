@@ -63,7 +63,6 @@ namespace in::text {
 	while (is_whitespace(s[right])) {
 		--right;
 	}
-	s.find('c');
 	return s.substr(0, 1 + right);
 }
 } // namespace in::text
