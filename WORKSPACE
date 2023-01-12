@@ -1,4 +1,4 @@
-workspace(name = "silversearcher")
+workspace(name = "ichneutae")
 
 load("//build/workspace:step_0.bzl", "workspace_step_0")
 

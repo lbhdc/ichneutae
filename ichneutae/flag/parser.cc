@@ -1,12 +1,12 @@
-#include "silversearcher/flag/parser.h"
-#include "silversearcher/text/search.h"
+#include "ichneutae/flag/parser.h"
+#include "ichneutae/text/search.h"
 #include <functional>
 #include <iomanip>
 #include <iostream>
 #include <map>
 #include <vector>
 
-namespace ag::flag::internal {
+namespace in::flag::internal {
 // flag_set holds registered flags to make them available to the parser
 class flag_set {
 	// instance_ptr holds the singleton instance of the flag set and is created and accessed through
@@ -49,14 +49,14 @@ public:
 
 // valid_flag_name checks that flag names don't contain characters needed to parse the flags
 constexpr void valid_flag_name(std::string_view name) noexcept {
-	if (name.starts_with('-') or ag::text::contains(name, '=')) {
+	if (name.starts_with('-') or in::text::contains(name, '=')) {
 		std::cerr << "flag: invalid name: cannot start with '-' or contain '=' got '" << name << "'\n";
 		std::exit(1);
 	}
 }
-} // namespace ag::flag::internal
+} // namespace in::flag::internal
 
-namespace ag::flag {
+namespace in::flag {
 std::span<std::string> argv() noexcept {
 	return internal::flag_set::instance()->argv;
 }
@@ -159,4 +159,4 @@ int64_t* int64(std::string_view name, int64_t default_val, std::string usage) no
 	internal::flag_set::instance()->setter_usage[name] = std::move(usage);
 	return out;
 }
-} // namespace ag::flag
+} // namespace in::flag

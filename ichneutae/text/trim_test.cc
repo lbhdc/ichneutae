@@ -1,4 +1,4 @@
-#include "silversearcher/text/trim.h"
+#include "ichneutae/text/trim.h"
 #include <gtest/gtest.h>
 
 namespace {
@@ -12,7 +12,7 @@ class trim_prefix_test : public ::testing::TestWithParam<trim_prefix_test_case> 
 
 TEST_P(trim_prefix_test, prefixes_are_trimable) {
 	trim_prefix_test_case c = GetParam();
-	ASSERT_EQ(ag::text::trim_prefix(c.have, c.prefix), c.want);
+	ASSERT_EQ(in::text::trim_prefix(c.have, c.prefix), c.want);
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -36,7 +36,7 @@ class trim_suffix_test : public ::testing::TestWithParam<trim_suffix_test_case> 
 
 TEST_P(trim_suffix_test, suffixes_are_trimable) {
 	trim_suffix_test_case c = GetParam();
-	ASSERT_EQ(ag::text::trim_suffix(c.have, c.suffix), c.want);
+	ASSERT_EQ(in::text::trim_suffix(c.have, c.suffix), c.want);
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -51,14 +51,14 @@ INSTANTIATE_TEST_SUITE_P(
 );
 
 TEST(trim_whitespace, whatspace_is_trimable) {
-	ASSERT_EQ(ag::text::trim_whitespace("\n\t\r\f  a  \f\r\t\n"), "a");
+	ASSERT_EQ(in::text::trim_whitespace("\n\t\r\f  a  \f\r\t\n"), "a");
 }
 
 TEST(trim_whitespace_prefix, whatspace_is_trimable) {
-	ASSERT_EQ(ag::text::trim_whitespace_prefix("\n\t\r\f  a"), "a");
+	ASSERT_EQ(in::text::trim_whitespace_prefix("\n\t\r\f  a"), "a");
 }
 
 TEST(trim_whitespace_suffix, whatspace_is_trimable) {
-	ASSERT_EQ(ag::text::trim_whitespace_suffix("a  \f\r\t\n"), "a");
+	ASSERT_EQ(in::text::trim_whitespace_suffix("a  \f\r\t\n"), "a");
 }
 } // namespace

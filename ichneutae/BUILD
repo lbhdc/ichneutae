@@ -8,7 +8,7 @@ cc_library(
 )
 
 cc_test(
-    name = "silversearcher_test",
+    name = "ichneutae_test",
     size = "small",
     srcs = [
         "result_test.cc",

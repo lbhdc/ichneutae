@@ -1,10 +1,10 @@
-#ifndef SILVERSEARCHER_TEXT_TRIM_H
-#define SILVERSEARCHER_TEXT_TRIM_H
+#ifndef ICHNEUTAE_TEXT_TRIM_H
+#define ICHNEUTAE_TEXT_TRIM_H
 
 #include <string>
 #include <string_view>
 
-namespace ag::text {
+namespace in::text {
 /// is_whitespace returns true if a character is whitespace
 [[nodiscard]] constexpr bool is_whitespace(const char ch) noexcept {
 	return (ch == ' ') or (ch == '\t') or (ch == '\n') or (ch == '\r') or (ch == '\f');
@@ -66,6 +66,6 @@ namespace ag::text {
 	s.find('c');
 	return s.substr(0, 1 + right);
 }
-} // namespace ag::text
+} // namespace in::text
 
-#endif // SILVERSEARCHER_TEXT_TRIM_H
+#endif // ICHNEUTAE_TEXT_TRIM_H

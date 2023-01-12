@@ -1,5 +1,5 @@
-#ifndef SILVERSEARCHER_RESULT_H
-#define SILVERSEARCHER_RESULT_H
+#ifndef ICHNEUTAE_RESULT_H
+#define ICHNEUTAE_RESULT_H
 
 #include <cstdint>
 #include <filesystem>
@@ -7,7 +7,7 @@
 #include <string>
 #include <string_view>
 
-namespace ag {
+namespace in {
 enum class result_code : int {
 	ok = 0,
 	unknown = 1,
@@ -159,6 +159,6 @@ result unknown() noexcept {
 result unknown(const std::string& msg) noexcept {
 	return {result_code::unknown, code_to_string(result_code::unknown) + ": " + msg};
 }
-} // namespace ag
+} // namespace in
 
-#endif // SILVERSEARCHER_RESULT_H
+#endif // ICHNEUTAE_RESULT_H

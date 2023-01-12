@@ -1,10 +1,10 @@
-#ifndef SILVERSEARCHER_FLAG_PARSER_H
-#define SILVERSEARCHER_FLAG_PARSER_H
+#ifndef ICHNEUTAE_FLAG_PARSER_H
+#define ICHNEUTAE_FLAG_PARSER_H
 
 #include <span>
 #include <string>
 
-namespace ag::flag {
+namespace in::flag {
 /// argv returns the positional args that were not parsed as flags or their values. This does not
 /// include the executable name, see `executable_name`.
 [[nodiscard]] std::span<std::string> argv() noexcept;
@@ -55,6 +55,6 @@ void parse(int argc, char* argv[]) noexcept;
 	int64_t default_val,
 	std::string usage
 ) noexcept;
-} // namespace ag::flag
+} // namespace in::flag
 
-#endif // SILVERSEARCHER_FLAG_PARSER_H
+#endif // ICHNEUTAE_FLAG_PARSER_H

@@ -1,7 +1,7 @@
 load("//build:crosscompile.bzl", "crosscompile")
 
 cc_binary(
-    name = "ag",
+    name = "in",
     srcs = ["main.cc"],
     features = ["static_libstdcxx"],
 )
@@ -13,4 +13,4 @@ PLATFORMS = [
     "@aspect_gcc_toolchain//platforms:x86_64_linux",
 ]
 
-[crosscompile(":ag", platform) for platform in PLATFORMS]
+[crosscompile(":in", platform) for platform in PLATFORMS]
