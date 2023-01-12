@@ -1,0 +1,26 @@
+repos:
+  - repo: https://github.com/FelixSeptem/pre-commit-golang
+    rev: 12f5442f51377b10b26651ad745206bbe1500ad6
+    hooks:
+      - id: bazel-buildifier
+        name: bazel-buildifier (bazel/BUILD/bzl)
+        files: \.(bazel|BUILD|bzl)$
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v15.0.6
+    hooks:
+      - id: clang-format
+        name: clang-format (cc/h)
+        files: \.[hc]c?$
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: end-of-file-fixer
+        exclude: \.(diff|md)$
+      - id: forbid-new-submodules
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+  - repo: meta
+    hooks:
+      - id: check-useless-excludes
