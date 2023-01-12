@@ -15,15 +15,14 @@ class flag_set {
 
 	// flag_set isn't constructable outside of the singleton
 	flag_set() = default;
-
 	flag_set(const flag_set&) = default;
-
 	flag_set(flag_set&&) = default;
 
 public:
 	// argv holds positional arguments that were not parsed as flags or flag values
 	std::vector<std::string> argv{};
-	std::string_view executable_name{"flag: called before parse name unavailable "};
+	// executable_name is the program name extracted from argv
+	std::string_view executable_name{};
 	// setter_no_arg is a map of flag names and a function that initializes its state with the
 	// provided function
 	std::map<std::string_view, std::function<void()>> setter_no_arg{};
@@ -35,7 +34,6 @@ public:
 
 	// flag set is a singleton and can't be moved or copied
 	flag_set& operator=(const flag_set&) = delete;
-
 	flag_set& operator=(flag_set&&) = delete;
 
 	// instance returns a pointer to the flags singleton
