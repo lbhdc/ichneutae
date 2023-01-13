@@ -1,8 +1,8 @@
 load("@rules_cc//cc:defs.bzl", "cc_test")
 
 cc_library(
-    name = "search",
-    hdrs = ["search.h"],
+    name = "contains",
+    hdrs = ["contains.h"],
     visibility = ["//visibility:public"],
 )
 
@@ -16,12 +16,12 @@ cc_test(
     name = "text_test",
     size = "small",
     srcs = [
-        "search_test.cc",
+        "contains_test.cc",
         "trim_test.cc",
     ],
     visibility = ["//visibility:private"],
     deps = [
-        ":search",
+        ":contains",
         ":trim",
         "@com_google_googletest//:gtest_main",
     ],

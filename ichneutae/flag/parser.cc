@@ -1,5 +1,5 @@
 #include "ichneutae/flag/parser.h"
-#include "ichneutae/text/search.h"
+#include "ichneutae/text/contains.h"
 #include <functional>
 #include <iomanip>
 #include <iostream>

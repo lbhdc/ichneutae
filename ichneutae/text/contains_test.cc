@@ -1,4 +1,4 @@
-#include "ichneutae/text/search.h"
+#include "ichneutae/text/contains.h"
 #include <gtest/gtest.h>
 
 namespace {
