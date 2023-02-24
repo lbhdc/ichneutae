@@ -1,0 +1,22 @@
+build --cxxopt -std=c++20
+
+build --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+build --incompatible_strict_action_env=true
+build --incompatible_enable_cc_toolchain_resolution
+
+build:asan-core --copt -fsanitize=address
+build:asan-core --linkopt -fsanitize=address
+build:asan --platform_suffix=-asan --config=asan-core
+
+build:tsan-core --copt -fsanitize=thread
+build:tsan-core --linkopt -fsanitize=thread
+build:tsan --platform_suffix=-tsan --config=tsan-core
+
+build:lsan-core --copt -fsanitize=leak
+build:lsan-core --linkopt -fsanitize=leak
+build:lsan --platform_suffix=-lsan --config=lsan-core
+
+build:ubsan-core --copt -fsanitize=undefined --copt -fno-sanitize-recover
+build:ubsan-core --copt -fno-sanitize=alignment
+build:ubsan-core --linkopt -fsanitize=undefined
+build:ubsan --platform_suffix=-ubsan --config=ubsan-core
