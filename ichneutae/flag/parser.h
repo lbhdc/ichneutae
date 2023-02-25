@@ -24,6 +24,8 @@ namespace in::flag {
 /// Positional args not parsed can be accessed using `argv`.
 void parse(int argc, char* argv[]) noexcept;
 
+[[nodiscard]] std::string usage() noexcept;
+
 /// string registers a flag that is wrangled into a std::string and returned as a pointer
 ///
 /// The returned pointer is initialized as the default_value, and should never be a nullptr.

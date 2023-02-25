@@ -4,6 +4,7 @@ cc_binary(
     name = "in",
     srcs = ["main.cc"],
     features = ["static_libstdcxx"],
+    deps = ["//ichneutae/flag:parser"],
 )
 
 # supported platforms

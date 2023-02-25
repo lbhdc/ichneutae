@@ -27,4 +27,11 @@ TEST(parser, it_works) {
 	ASSERT_EQ(in::flag::nargs(), 1);
 	ASSERT_EQ(in::flag::argv()[0], "positional-arg");
 }
+
+TEST(parser, built_in_flags) {
+	// string literals cant be non-const char* without setting -Wwrite-strings or explicit cast
+	const char* argv[] = {"myapp", "-help"};
+	// the parse function exits with code zero when the help flag is passed
+	EXPECT_EXIT(in::flag::parse(2, const_cast<char**>(argv)), testing::ExitedWithCode(0), "");
+}
 } // namespace

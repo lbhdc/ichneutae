@@ -6,7 +6,10 @@
 #include <map>
 #include <vector>
 
-namespace in::flag::internal {
+namespace in::flag {
+// built-in flags are executed in the parse function directly after parsing
+const auto help_flag = boolean("help", false, "Prints the program usage");
+
 // flag_set holds registered flags to make them available to the parser
 class flag_set {
 	// instance_ptr holds the singleton instance of the flag set and is created and accessed through
@@ -47,28 +50,26 @@ public:
 
 // valid_flag_name checks that flag names don't contain characters needed to parse the flags
 constexpr void valid_flag_name(std::string_view name) noexcept {
-	if (name.starts_with('-') or in::text::contains(name, '=')) {
-		std::cerr << "flag: invalid name: cannot start with '-' or contain '=' got '" << name << "'\n";
-		std::exit(1);
+	if (name.starts_with('-') or text::contains(name, '=')) {
+		std::cerr << "flag: invalid name: cannot start with '-' or contain '=' got '" << name << '\'';
+		std::exit(EXIT_FAILURE);
 	}
 }
-} // namespace in::flag::internal
 
-namespace in::flag {
 std::span<std::string> argv() noexcept {
-	return internal::flag_set::instance()->argv;
+	return flag_set::instance()->argv;
 }
 
 size_t nargs() noexcept {
-	return internal::flag_set::instance()->argv.size();
+	return flag_set::instance()->argv.size();
 }
 
 std::string_view executable_name() noexcept {
-	return internal::flag_set::instance()->executable_name;
+	return flag_set::instance()->executable_name;
 }
 
 void parse(int argc, char** argv) noexcept {
-	auto fs = internal::flag_set::instance();
+	auto fs = flag_set::instance();
 	fs->executable_name = *argv;
 	// no-op no args given
 	if (argc == 1) {
@@ -118,43 +119,83 @@ void parse(int argc, char** argv) noexcept {
 			fs->setter_single_arg[flag](std::move(value));
 		}
 	}
+	// handle built in flags
+	if (*help_flag) {
+		std::cout << usage();
+		std::exit(EXIT_SUCCESS);
+	}
+}
+
+std::string usage() noexcept {
+	const auto fs = flag_set::instance();
+	// the flag_set captures the name as provided. We just want the file name
+	size_t exec_begin{0};
+	if (text::contains(fs->executable_name, '/')) {
+		exec_begin = fs->executable_name.find_last_of('/') + 1;
+	}
+	auto indent = std::string(4, ' ');
+	// add usage block
+	auto usg =
+		"USAGE\n" + indent + fs->executable_name.substr(exec_begin).begin() + " [flags] [args...]\n";
+	// add flags block if flags have been defined
+	if (not fs->setter_usage.empty()) {
+		usg += "\nFLAGS\n";
+		// find the widest key so the usage offtext can be aligned for all flags
+		size_t max_key_width{0};
+		for (auto& [flag_name, _] : fs->setter_usage) {
+			max_key_width = std::max(max_key_width, flag_name.size());
+		}
+		// set the whitespace so the longest flag doesn't run into the usage text
+		auto min_space_between_flag_and_usage{4};
+		// add the flags to the usage text
+		for (auto& [flag_name, usage_text] : fs->setter_usage) {
+			auto space_between_flag_and_usage =
+				std::string((max_key_width - flag_name.size()) + min_space_between_flag_and_usage, ' ');
+			// {indent}-{flag_name}{whitespace}{usage_text}
+			usg += indent + '-';
+			usg += flag_name;
+			usg += space_between_flag_and_usage;
+			usg += usage_text + '\n';
+		}
+	}
+	// add an empty line to the end of usage
+	usg += "\n";
+	return usg;
 }
 
 std::string* string(std::string_view name, std::string default_val, std::string usage) noexcept {
-	internal::valid_flag_name(name);
+	valid_flag_name(name);
 	auto out = new std::string{std::move(default_val)};
-	internal::flag_set::instance()->setter_single_arg[name] = [=](std::string&& in) {
-		*out = std::move(in);
-	};
-	internal::flag_set::instance()->setter_usage[name] = std::move(usage);
+	flag_set::instance()->setter_single_arg[name] = [=](std::string&& in) { *out = std::move(in); };
+	flag_set::instance()->setter_usage[name] = std::move(usage);
 	return out;
 }
 
 bool* boolean(std::string_view name, bool default_val, std::string usage) noexcept {
-	internal::valid_flag_name(name);
+	valid_flag_name(name);
 	auto out = new bool{default_val};
-	internal::flag_set::instance()->setter_no_arg[name] = [=]() { *out = true; };
-	internal::flag_set::instance()->setter_usage[name] = std::move(usage);
+	flag_set::instance()->setter_no_arg[name] = [=]() { *out = true; };
+	flag_set::instance()->setter_usage[name] = std::move(usage);
 	return out;
 }
 
 int32_t* int32(std::string_view name, int32_t default_val, std::string usage) noexcept {
-	internal::valid_flag_name(name);
+	valid_flag_name(name);
 	auto out = new int32_t{default_val};
-	internal::flag_set::instance()->setter_single_arg[name] = [=](std::string&& in) {
+	flag_set::instance()->setter_single_arg[name] = [=](std::string&& in) {
 		std::istringstream(in) >> *out;
 	};
-	internal::flag_set::instance()->setter_usage[name] = std::move(usage);
+	flag_set::instance()->setter_usage[name] = std::move(usage);
 	return out;
 }
 
 int64_t* int64(std::string_view name, int64_t default_val, std::string usage) noexcept {
-	internal::valid_flag_name(name);
+	valid_flag_name(name);
 	auto out = new int64_t{default_val};
-	internal::flag_set::instance()->setter_single_arg[name] = [=](std::string&& in) {
+	flag_set::instance()->setter_single_arg[name] = [=](std::string&& in) {
 		std::istringstream(in) >> *out;
 	};
-	internal::flag_set::instance()->setter_usage[name] = std::move(usage);
+	flag_set::instance()->setter_usage[name] = std::move(usage);
 	return out;
 }
 } // namespace in::flag
