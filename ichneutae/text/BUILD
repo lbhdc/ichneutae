@@ -7,6 +7,18 @@ cc_library(
 )
 
 cc_library(
+    name = "remove_all",
+    hdrs = ["remove_all.h"],
+    deps = [":replace_all"],
+)
+
+cc_library(
+    name = "replace_all",
+    srcs = ["replace_all.cc"],
+    hdrs = ["replace_all.h"],
+)
+
+cc_library(
     name = "trim",
     hdrs = ["trim.h"],
     visibility = ["//visibility:public"],
@@ -17,10 +29,13 @@ cc_test(
     size = "small",
     srcs = [
         "contains_test.cc",
+        "replace_all_test.cc",
         "trim_test.cc",
     ],
     deps = [
         ":contains",
+        ":remove_all",
+        ":replace_all",
         ":trim",
         "@com_google_googletest//:gtest_main",
     ],
