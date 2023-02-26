@@ -40,6 +40,13 @@ result invalid_argument(const std::string& msg) noexcept {
 	};
 }
 
+result failed_precondition(const std::string& msg) noexcept {
+	return {
+		result_code::failed_precondition,
+		code_to_string(result_code::failed_precondition) + ": " + msg,
+	};
+}
+
 result unknown() noexcept {
 	return {result_code::unknown, code_to_string(result_code::unknown)};
 }

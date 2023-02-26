@@ -8,6 +8,7 @@ cc_library(
 cc_library(
     name = "result_or",
     hdrs = ["result_or.h"],
+    visibility = ["//visibility:public"],
     deps = [":result"],
 )
 

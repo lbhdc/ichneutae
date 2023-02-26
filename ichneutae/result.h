@@ -12,6 +12,7 @@ enum class result_code : int {
 	ok = 0,
 	unknown = 1,
 	invalid_argument = 2,
+	failed_precondition = 3,
 };
 
 constexpr std::string_view code_to_string_view(result_code code) noexcept {
@@ -20,6 +21,8 @@ constexpr std::string_view code_to_string_view(result_code code) noexcept {
 		return "ok";
 	case result_code::invalid_argument:
 		return "invalid argument";
+	case result_code::failed_precondition:
+		return "failed_precondition";
 	case result_code::unknown:
 	default:
 		return "unknown";
@@ -77,6 +80,8 @@ public:
 [[nodiscard]] result ok_result() noexcept;
 
 [[nodiscard]] result invalid_argument(const std::string& msg) noexcept;
+
+[[nodiscard]] result failed_precondition(const std::string& msg) noexcept;
 
 [[nodiscard]] result unknown() noexcept;
 
