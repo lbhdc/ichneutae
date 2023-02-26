@@ -6,7 +6,7 @@
 
 namespace in::bazel {
 /// workspace locates the root directory in a bazel workspace
-[[nodiscard]] result_or<std::string> workspace() noexcept;
+[[nodiscard]] result_or<std::string> workspace(std::string_view current_dir = {}) noexcept;
 } // namespace in::bazel
 
 #endif
