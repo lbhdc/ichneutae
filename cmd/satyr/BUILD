@@ -1,4 +1,5 @@
 load("//build:crosscompile.bzl", "crosscompile")
+load("@com_github_google_rules_install//installer:def.bzl", "installer")
 
 cc_binary(
     name = "satyr",
@@ -16,6 +17,11 @@ cc_binary(
         "//ichneutae/generate:cc_source",
         "//ichneutae/os:path",
     ],
+)
+
+installer(
+    name = "install_satyr",
+    data = [":satyr"],
 )
 
 # supported platforms

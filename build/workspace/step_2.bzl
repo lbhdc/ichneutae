@@ -1,11 +1,13 @@
 load("@aspect_gcc_toolchain//toolchain:repositories.bzl", "gcc_toolchain_dependencies")
 load("@aspect_gcc_toolchain//toolchain:defs.bzl", "gcc_register_toolchain")
+load("@com_github_google_rules_install//:setup.bzl", "install_rules_setup")
 
 LIBC = "glibc"
 
 GCC_VERSION = "bleeding-edge-2022.08-1"
 
 def workspace_step_2():
+    install_rules_setup()
     gcc_toolchain_dependencies()
     gcc_register_toolchain(
         name = "gcc12_x86-64_{libc}".format(libc = LIBC),
