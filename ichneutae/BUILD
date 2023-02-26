@@ -16,7 +16,6 @@ cc_test(
     srcs = [
         "result_test.cc",
     ],
-    visibility = ["//visibility:private"],
     deps = [
         ":result",
         "@com_google_googletest//:gtest_main",

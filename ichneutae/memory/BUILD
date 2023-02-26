@@ -24,7 +24,6 @@ cc_test(
         "aligned_allocator_test.cc",
         "holding_pen_test.cc",
     ],
-    visibility = ["//visibility:private"],
     deps = [
         ":aligned_allocator",
         ":holding_pen",

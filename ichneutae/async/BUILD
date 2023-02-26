@@ -1,14 +1,14 @@
-package(default_visibility = ["//visibility:public"])
-
 cc_library(
     name = "coroutine",
     hdrs = ["coroutine.h"],
     copts = ["-fcoroutines"],
+    visibility = ["//visibility:public"],
 )
 
 cc_library(
     name = "generator",
     hdrs = ["generator.h"],
+    visibility = ["//visibility:public"],
     deps = [
         ":coroutine",
         "//ichneutae/memory:aligned_allocator",

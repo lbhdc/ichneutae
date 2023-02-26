@@ -1,11 +1,8 @@
-package(default_visibility = ["//visibility:public"])
-
-load("@rules_cc//cc:defs.bzl", "cc_test")
-
 cc_library(
     name = "path",
     srcs = ["path.cc"],
     hdrs = ["path.h"],
+    visibility = ["//visibility:public"],
 )
 
 cc_test(

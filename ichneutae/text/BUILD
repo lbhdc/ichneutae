@@ -19,7 +19,6 @@ cc_test(
         "contains_test.cc",
         "trim_test.cc",
     ],
-    visibility = ["//visibility:private"],
     deps = [
         ":contains",
         ":trim",
