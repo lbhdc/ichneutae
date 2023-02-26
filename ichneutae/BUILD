@@ -1,8 +1,12 @@
-load("@rules_cc//cc:defs.bzl", "cc_test")
-
 cc_library(
     name = "result",
     hdrs = ["result.h"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "version",
+    hdrs = ["version.h"],
     visibility = ["//visibility:public"],
 )
 
