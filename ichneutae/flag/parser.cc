@@ -1,4 +1,5 @@
 #include "ichneutae/flag/parser.h"
+#include "ichneutae/os/path.h"
 #include "ichneutae/text/contains.h"
 #include <functional>
 #include <iomanip>
@@ -70,7 +71,7 @@ std::string_view executable_name() noexcept {
 
 void parse(int argc, char** argv) noexcept {
 	auto fs = flag_set::instance();
-	fs->executable_name = *argv;
+	fs->executable_name = os::file_name(*argv);
 	// no-op no args given
 	if (argc == 1) {
 		return;

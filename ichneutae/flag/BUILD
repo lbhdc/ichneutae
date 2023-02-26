@@ -6,6 +6,7 @@ cc_library(
     hdrs = ["parser.h"],
     visibility = ["//visibility:public"],
     deps = [
+        "//ichneutae/os:path",
         "//ichneutae/text:contains",
     ],
 )
