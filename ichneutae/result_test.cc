@@ -41,7 +41,7 @@ TEST(result, it_works) {
 TEST(result_or, it_works) {
 	auto rs = in::result_or<std::string>("asdf");
 	ASSERT_TRUE(rs.ok());
-	ASSERT_TRUE(rs.res().ok());
+	ASSERT_TRUE(rs.result().ok());
 	ASSERT_EQ(rs.value(), "asdf");
 	rs = h(true);
 	ASSERT_TRUE(rs.ok());

@@ -59,50 +59,32 @@ public:
 	result(result&&) noexcept = default;
 	result& operator=(result&&) noexcept = default;
 
+	~result() = default;
+
 	/// code returns the numeric code associated with a result
-	[[nodiscard]] result_code code() const noexcept {
-		if (this->payload) {
-			return this->payload->code;
-		}
-		return result_code::ok;
-	}
+	[[nodiscard]] result_code code() const noexcept;
 
 	/// message returns a string_view of an error message
-	[[nodiscard]] std::string_view message() const noexcept {
-		if (this->payload) {
-			return this->payload->message;
-		}
-		return code_to_string_view(result_code::ok);
-	}
+	[[nodiscard]] std::string_view message() const noexcept;
 
 	/// ok returns true if the code() == result_code::ok
-	[[nodiscard]] bool ok() const noexcept {
-		if (this->payload) {
-			return this->payload->code == result_code::ok;
-		}
-		return true;
-	}
+	[[nodiscard]] bool ok() const noexcept;
 
 	/// to_string returns the error message as a std::string
-	[[nodiscard]] std::string to_string() noexcept {
-		if (this->payload) {
-			return this->payload->message;
-		}
-		return code_to_string(result_code::ok);
-	}
+	[[nodiscard]] std::string to_string() noexcept;
 };
 
 /// result_or encapsulates a value and an error result
 template<typename T = void> class result_or {
 	T data{};
-	result rs{};
+	in::result rs{};
 
 public:
 	result_or() = delete;
 
 	result_or(T&& data) : data{std::forward<T>(data)} {}
 
-	result_or(result&& res) : rs{std::move(res)} {}
+	result_or(in::result&& res) : rs{std::move(res)} {}
 
 	// not copyable
 	result_or(result_or&) = delete;
@@ -123,7 +105,7 @@ public:
 	}
 
 	/// res ejects the result object
-	[[nodiscard]] result res() noexcept {
+	[[nodiscard]] in::result result() noexcept {
 		return std::move(this->rs);
 	}
 
@@ -133,32 +115,13 @@ public:
 	}
 };
 
-result ok_result() noexcept {
-	return {result_code::ok, code_to_string(result_code::ok)};
-}
+[[nodiscard]] result ok_result() noexcept;
 
-result ok_result(const std::string& msg) noexcept {
-	return {result_code::ok, code_to_string(result_code::ok) + ": " + msg};
-}
+[[nodiscard]] result invalid_argument(const std::string& msg) noexcept;
 
-result invalid_argument() noexcept {
-	return {result_code::invalid_argument, code_to_string(result_code::invalid_argument)};
-}
+[[nodiscard]] result unknown() noexcept;
 
-result invalid_argument(const std::string& msg) noexcept {
-	return {
-		result_code::invalid_argument,
-		code_to_string(result_code::invalid_argument) + ": " + msg,
-	};
-}
-
-result unknown() noexcept {
-	return {result_code::unknown, code_to_string(result_code::unknown)};
-}
-
-result unknown(const std::string& msg) noexcept {
-	return {result_code::unknown, code_to_string(result_code::unknown) + ": " + msg};
-}
+[[nodiscard]] result unknown(const std::string& msg) noexcept;
 } // namespace in
 
 #endif // ICHNEUTAE_RESULT_H
