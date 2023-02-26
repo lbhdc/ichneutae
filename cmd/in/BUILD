@@ -1,4 +1,5 @@
 load("//build:crosscompile.bzl", "crosscompile")
+load("@com_github_google_rules_install//installer:def.bzl", "installer")
 
 cc_binary(
     name = "in",
@@ -8,6 +9,11 @@ cc_binary(
         "//ichneutae:version",
         "//ichneutae/flag:parser",
     ],
+)
+
+installer(
+    name = "install_in",
+    data = [":in"],
 )
 
 # supported platforms
