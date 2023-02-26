@@ -6,6 +6,12 @@ cc_library(
 )
 
 cc_library(
+    name = "result_or",
+    hdrs = ["result_or.h"],
+    deps = [":result"],
+)
+
+cc_library(
     name = "version",
     hdrs = ["version.h"],
     visibility = ["//visibility:public"],
@@ -19,6 +25,7 @@ cc_test(
     ],
     deps = [
         ":result",
+        ":result_or",
         "@com_google_googletest//:gtest_main",
     ],
 )

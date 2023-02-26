@@ -1,4 +1,5 @@
 #include "ichneutae/result.h"
+#include "ichneutae/result_or.h"
 #include <gtest/gtest.h>
 
 namespace {

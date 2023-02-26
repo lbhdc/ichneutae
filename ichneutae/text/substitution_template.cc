@@ -7,9 +7,9 @@ std::string substitution_template::execute(std::istream& input) const noexcept {
 		for (const auto& [what, with] : this->values) {
 			replace_all(row, what, with);
 		}
-		rendered_template += row;
+		rendered_template += row + '\n';
 	}
-	return rendered_template;
+	return rendered_template.substr(0, rendered_template.size() - 1);
 }
 
 std::string substitution_template::execute(std::istream& input, value_map&& extra_args)
@@ -22,9 +22,9 @@ std::string substitution_template::execute(std::istream& input, value_map&& extr
 		for (const auto& [what, with] : extra_args) {
 			replace_all(row, what, with);
 		}
-		rendered_template += row;
+		rendered_template += row + '\n';
 	}
-	return rendered_template;
+	return rendered_template.substr(0, rendered_template.size() - 1);
 }
 
 std::string substitution_template::render(
