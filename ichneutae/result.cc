@@ -1,6 +1,24 @@
 #include "ichneutae/result.h"
 
 namespace in {
+constexpr std::string_view code_to_string_view(result_code code) noexcept {
+	switch (code) {
+	case result_code::ok:
+		return "ok";
+	case result_code::invalid_argument:
+		return "invalid argument";
+	case result_code::failed_precondition:
+		return "failed_precondition";
+	case result_code::unknown:
+	default:
+		return "unknown";
+	}
+}
+
+std::string code_to_string(result_code code) noexcept {
+	return code_to_string_view(code).begin();
+}
+
 result_code result::code() const noexcept {
 	if (this->payload) {
 		return this->payload->code;

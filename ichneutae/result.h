@@ -15,28 +15,10 @@ enum class result_code : int {
 	failed_precondition = 3,
 };
 
-constexpr std::string_view code_to_string_view(result_code code) noexcept {
-	switch (code) {
-	case result_code::ok:
-		return "ok";
-	case result_code::invalid_argument:
-		return "invalid argument";
-	case result_code::failed_precondition:
-		return "failed_precondition";
-	case result_code::unknown:
-	default:
-		return "unknown";
-	}
-}
-
-std::string code_to_string(result_code code) noexcept {
-	return code_to_string_view(code).begin();
-}
-
 // result_payload holds the error details in a result
 struct result_payload {
 	// message is the body of the error
-	std::string message{code_to_string(result_code::ok)};
+	std::string message{"ok"};
 	// code is the category the error belongs to
 	result_code code{result_code::ok};
 };
