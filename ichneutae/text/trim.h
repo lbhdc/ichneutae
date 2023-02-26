@@ -22,6 +22,15 @@ namespace in::text {
 	return s.substr(pivot);
 }
 
+/// trim_prefix remove a prefix from a string in place
+void trim_prefix(std::string& s, const std::string_view prefix) noexcept {
+	const auto pivot = s.find_first_not_of(prefix);
+	if (pivot == std::string::npos) {
+		s = {};
+	}
+	s = s.substr(pivot);
+}
+
 /// trim_suffix remove a suffix from a string_view
 [[nodiscard]] constexpr std::string_view trim_suffix(
 	const std::string_view s,
@@ -32,6 +41,15 @@ namespace in::text {
 		return s;
 	}
 	return s.substr(0, pivot + 1);
+}
+
+/// trim_suffix remove a suffix from a string in place
+void trim_suffix(std::string& s, const std::string_view suffix) noexcept {
+	const auto pivot = s.find_last_not_of(suffix);
+	if (pivot == std::string::npos) {
+		return;
+	}
+	s = s.substr(0, pivot + 1);
 }
 
 /// trim_whitespace removes the prefix and suffix of whitespace from a sting_view.
