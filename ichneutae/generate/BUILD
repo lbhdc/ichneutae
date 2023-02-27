@@ -3,7 +3,10 @@ cc_library(
     srcs = ["cc_build.cc"],
     hdrs = ["cc_build.h"],
     visibility = ["//visibility:public"],
-    deps = ["//ichneutae/text:substitution_template"],
+    deps = [
+        "//ichneutae/generate:cc_target",
+        "//ichneutae/text:substitution_template",
+    ],
 )
 
 cc_library(
@@ -24,7 +27,9 @@ cc_library(
     srcs = ["cc_header.cc"],
     hdrs = ["cc_header.h"],
     visibility = ["//visibility:public"],
-    deps = ["//ichneutae/text:substitution_template"],
+    deps = [
+        "//ichneutae/text:substitution_template",
+    ],
 )
 
 cc_library(
@@ -43,7 +48,16 @@ cc_library(
     srcs = ["cc_source.cc"],
     hdrs = ["cc_source.h"],
     visibility = ["//visibility:public"],
-    deps = ["//ichneutae/text:substitution_template"],
+    deps = [
+        "//ichneutae/generate:cc_target",
+        "//ichneutae/text:substitution_template",
+    ],
+)
+
+cc_library(
+    name = "cc_target",
+    srcs = ["cc_target.h"],
+    visibility = ["//visibility:public"],
 )
 
 cc_test(

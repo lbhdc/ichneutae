@@ -1,7 +1,7 @@
 #include "ichneutae/generate/cc_source.h"
 
 namespace in::generate {
-inline constexpr std::string_view cc_source_lib_tpl = R"(#include {{HEADER_FILE_PATH}}
+inline constexpr std::string_view cc_source_lib_tpl = R"(#include "{{HEADER_FILE_PATH}}"
 
 namespace {{NAMESPACE}} {} // namespace {{NAMESPACE}}
 )";
@@ -22,8 +22,11 @@ int main(int argc, char* argv[]) {
 }
 )";
 
-std::string cc_source(text::substitution_template::value_map&& vm, const bool library) noexcept {
-	if (library) {
+std::string cc_source(
+	text::substitution_template::value_map&& vm,
+	const cc_target target
+) noexcept {
+	if (target == cc_target::library) {
 		return text::substitution_template::render(cc_source_lib_tpl, std::move(vm));
 	}
 	return text::substitution_template::render(cc_source_bin_tpl, std::move(vm));
@@ -32,10 +35,10 @@ std::string cc_source(text::substitution_template::value_map&& vm, const bool li
 void cc_source(
 	std::string_view path,
 	text::substitution_template::value_map&& vm,
-	const bool library
+	const cc_target target
 ) noexcept {
 	auto ofile = std::ofstream(path.begin());
-	auto rendered_template = cc_source(std::move(vm), library);
+	auto rendered_template = cc_source(std::move(vm), target);
 	ofile << rendered_template;
 	ofile.close();
 }

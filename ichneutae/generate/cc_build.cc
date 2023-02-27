@@ -42,8 +42,8 @@ PLATFORMS = [
 [crosscompile(":in", platform) for platform in PLATFORMS]
 )";
 
-std::string cc_build(text::substitution_template::value_map&& vm, bool library) noexcept {
-	if (library) {
+std::string cc_build(text::substitution_template::value_map&& vm, const cc_target target) noexcept {
+	if (target == cc_target::library) {
 		return text::substitution_template::render(cc_build_lib_tpl, std::move(vm));
 	}
 	return text::substitution_template::render(cc_build_bin_tpl, std::move(vm));
@@ -52,10 +52,10 @@ std::string cc_build(text::substitution_template::value_map&& vm, bool library) 
 void cc_build(
 	std::string_view path,
 	text::substitution_template::value_map&& vm,
-	bool library
+	const cc_target target
 ) noexcept {
 	auto ofile = std::ofstream(path.begin());
-	auto rendered_template = cc_build(std::move(vm), library);
+	auto rendered_template = cc_build(std::move(vm), target);
 	ofile << rendered_template;
 	ofile.close();
 }

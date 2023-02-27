@@ -54,16 +54,26 @@ void gen_command(std::span<std::string> cmds) {
 		std::cerr << "remove labels aren't supported";
 		std::exit(EXIT_FAILURE);
 	}
-	auto gen_cc_build = [&] {
-		auto build_path = in::os::join(workspace, label.directory, "BUILD");
+	// create any directories needed
+	auto absolute_dir_path = in::os::join(workspace, label.directory);
+	std::cout << absolute_dir_path;
+	if (not std::filesystem::create_directories(absolute_dir_path)) {
+		if (not std::filesystem::exists(absolute_dir_path)) {
+			std::cerr << "failed to create directory: " << absolute_dir_path;
+			std::exit(EXIT_FAILURE);
+		}
+	}
+	const auto target = *bin ? in::generate::cc_target::binary : in::generate::cc_target::library;
+	const auto gen_cc_build = [&] {
+		const auto build_path = in::os::join(workspace, label.directory, "BUILD");
 		in::generate::cc_build(
 			build_path,
-			{{"{{NAME}}", label.target}, {"{{DIR_NAME}}", in::os::dir(label.directory)}},
-			*bin
+			{{"{{NAME}}", label.target}, {"{{DIR_NAME}}", in::os::file_name(label.directory)}},
+			target
 		);
 	};
-	auto gen_cc_header = [&] {
-		auto path = in::os::join(workspace, label.directory, label.target + ".h");
+	const auto gen_cc_header = [&] {
+		const auto path = in::os::join(workspace, label.directory, label.target + ".h");
 		in::generate::cc_header(
 			path,
 			{{"{{HEADER_GUARD}}",
@@ -71,14 +81,13 @@ void gen_command(std::span<std::string> cmds) {
 			 {"{{NAMESPACE}}", in::generate::cc_namespace(label)}}
 		);
 	};
-	auto gen_cc_source = [&] {
-		auto path = in::os::join(workspace, label.directory, label.target + ".cc");
+	const auto gen_cc_source = [&] {
+		const auto path = in::os::join(workspace, label.directory, label.target + ".cc");
 		in::generate::cc_source(
 			path,
-			{{"{{HEADER_FILE_PATH}}",
-				in::generate::cc_guards(in::os::join(label.directory, label.target + ".cc"))},
+			{{"{{HEADER_FILE_PATH}}", in::os::join(label.directory, label.target + ".h")},
 			 {"{{NAMESPACE}}", in::generate::cc_namespace(label)}},
-			*bin
+			target
 		);
 	};
 	// mux action and execute code generators
