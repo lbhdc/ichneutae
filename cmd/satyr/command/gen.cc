@@ -90,10 +90,13 @@ void gen(std::string* workspace_dir, const bool* bin, std::span<std::string> cmd
 		std::exit(EXIT_SUCCESS);
 	} else if ("cc-pkg" == action) {
 		gen_cc_build();
-		gen_cc_header();
 		gen_cc_source();
-		gen_cc_tests();
-		std::exit(EXIT_SUCCESS);
+		// don't generate headers or tests for binary targets
+		if (target == in::generate::cc_target::library) {
+			gen_cc_header();
+			gen_cc_tests();
+			std::exit(EXIT_SUCCESS);
+		}
 	}
 	std::cerr << "gen unknown action; got = '" << action << '\'';
 	std::exit(EXIT_FAILURE);
