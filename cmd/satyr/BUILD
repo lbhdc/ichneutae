@@ -4,6 +4,7 @@ load("@com_github_google_rules_install//installer:def.bzl", "installer")
 cc_binary(
     name = "satyr",
     srcs = ["main.cc"],
+    copts = ["-flto"],
     features = ["static_libstdcxx"],
     deps = [
         "//cmd/satyr/command:gen",

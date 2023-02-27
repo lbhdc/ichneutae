@@ -4,6 +4,7 @@ load("@com_github_google_rules_install//installer:def.bzl", "installer")
 cc_binary(
     name = "in",
     srcs = ["main.cc"],
+    copts = ["-flto"],
     features = ["static_libstdcxx"],
     deps = [
         "//ichneutae:version",
