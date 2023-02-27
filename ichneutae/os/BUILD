@@ -1,4 +1,12 @@
 cc_library(
+    name = "files",
+    srcs = ["files.cc"],
+    hdrs = ["files.h"],
+    visibility = ["//visibility:public"],
+    deps = ["//ichneutae:result"],
+)
+
+cc_library(
     name = "path",
     srcs = ["path.cc"],
     hdrs = ["path.h"],

@@ -7,6 +7,7 @@
 #include "ichneutae/generate/cc_namespace.h"
 #include "ichneutae/generate/cc_source.h"
 #include "ichneutae/generate/cc_tests.h"
+#include "ichneutae/os/files.h"
 #include "ichneutae/os/path.h"
 #include <iostream>
 
@@ -35,11 +36,9 @@ void gen(std::string* workspace_dir, const bool* bin, std::span<std::string> cmd
 	}
 	// create any directories needed
 	auto absolute_dir_path = in::os::join(workspace, label.directory);
-	if (not std::filesystem::create_directories(absolute_dir_path)) {
-		if (not std::filesystem::exists(absolute_dir_path)) {
-			std::cerr << "failed to create directory: " << absolute_dir_path;
-			std::exit(EXIT_FAILURE);
-		}
+	if (auto rs = in::os::create_directories(absolute_dir_path); not rs.ok()) {
+		std::cerr << rs.message();
+		std::exit(EXIT_FAILURE);
 	}
 	const auto target = *bin ? in::generate::cc_target::binary : in::generate::cc_target::library;
 	const auto gen_cc_build = [&] {

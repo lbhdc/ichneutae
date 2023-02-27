@@ -12,6 +12,7 @@ cc_library(
         "//ichneutae/generate:cc_namespace",
         "//ichneutae/generate:cc_source",
         "//ichneutae/generate:cc_tests",
+        "//ichneutae/os:files",
         "//ichneutae/os:path",
     ],
 )
