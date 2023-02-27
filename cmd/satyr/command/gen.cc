@@ -70,7 +70,7 @@ void gen(std::string* workspace_dir, const bool* bin, std::span<std::string> cmd
 	};
 	const auto gen_cc_tests = [&] {
 		const auto path = in::os::join(workspace, label.directory, label.target + "_test.cc");
-		in::generate::cc_header(
+		in::generate::cc_tests(
 			path,
 			{{"{{HEADER_FILE_PATH}}", in::os::join(label.directory, label.target + ".h")},
 			 {"{{DIR_NAME}}", in::os::file_name(label.directory)}}
