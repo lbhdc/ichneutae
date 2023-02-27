@@ -44,9 +44,14 @@ int main(int argc, char* argv[]) {
 			 )) {
 		if (not path.is_directory()) {
 			auto input = std::ifstream(path.path());
+			std::ostringstream buf;
+			bool matches_found{false};
 			for (auto match : in::text::search(input, needle)) {
-				std::cout << match.row << ':' << match.column << ' ' << path.path().string() << '\n'
-									<< match.data << "\n\n";
+				buf << match.row << ':' << match.data << "\n";
+				matches_found = true;
+			}
+			if (matches_found) {
+				std::cout << path.path().string() << '\n' << buf.str() << '\n';
 			}
 		}
 	}
