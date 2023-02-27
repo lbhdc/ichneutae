@@ -1,4 +1,5 @@
 #include "ichneutae/flag/parser.h"
+#include "ichneutae/os/user_home.h"
 #include "ichneutae/text/search.h"
 #include "ichneutae/version.h"
 #include <filesystem>
@@ -23,6 +24,15 @@ int main(int argc, char* argv[]) {
 			*haystack = in::flag::argv().back();
 		} else if (haystack->empty()) {
 			*haystack = std::filesystem::current_path().string();
+		}
+		// resolve tilde path
+		if ('~' == haystack->front()) {
+			auto rs = in::os::user_home();
+			if (not rs.ok()) {
+				std::cerr << "unable to resolve users home directory\n";
+				std::exit(EXIT_FAILURE);
+			}
+			*haystack = rs.value() + haystack->substr(1, haystack->size());
 		}
 	} else {
 		std::cerr << "un-recognized arguments\n";

@@ -13,6 +13,17 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "user_home",
+    srcs = ["user_home.cc"],
+    hdrs = ["user_home.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//ichneutae:result_or",
+        "//ichneutae/os:path",
+    ],
+)
+
 cc_test(
     name = "os_test",
     size = "small",

@@ -8,6 +8,7 @@ cc_binary(
     deps = [
         "//ichneutae:version",
         "//ichneutae/flag:parser",
+        "//ichneutae/os:user_home",
         "//ichneutae/text:contains",
         "//ichneutae/text:search",
     ],
