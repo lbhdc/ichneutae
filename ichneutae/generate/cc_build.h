@@ -17,6 +17,8 @@ void cc_build(
 	text::substitution_template::value_map&& vm,
 	cc_target target = cc_target::library
 ) noexcept;
+
+[[nodiscard]] std::string_view cc_build_template(cc_target target) noexcept;
 } // namespace in::generate
 
 #endif

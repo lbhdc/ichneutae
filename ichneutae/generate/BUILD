@@ -65,6 +65,9 @@ cc_library(
     srcs = ["cc_tests.cc"],
     hdrs = ["cc_tests.h"],
     visibility = ["//visibility:public"],
+    deps = [
+        "//ichneutae/text:substitution_template",
+    ],
 )
 
 cc_test(

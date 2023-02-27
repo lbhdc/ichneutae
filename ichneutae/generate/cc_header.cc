@@ -10,7 +10,7 @@ namespace {{NAMESPACE}} {} // namespace {{NAMESPACE}}
 )";
 
 std::string cc_header(text::substitution_template::value_map&& vm) noexcept {
-	return text::substitution_template::render(cc_header_tpl, std::move(vm));
+	return text::substitution_template::render(cc_header_template(), std::move(vm));
 }
 
 void cc_header(std::string_view path, text::substitution_template::value_map&& vm) noexcept {
@@ -18,5 +18,9 @@ void cc_header(std::string_view path, text::substitution_template::value_map&& v
 	auto rendered_template = cc_header(std::move(vm));
 	ofile << rendered_template;
 	ofile.close();
+}
+
+std::string_view cc_header_template() noexcept {
+	return cc_header_tpl;
 }
 } // namespace in::generate

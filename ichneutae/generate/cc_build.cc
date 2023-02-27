@@ -42,10 +42,7 @@ installer(
 )";
 
 std::string cc_build(text::substitution_template::value_map&& vm, const cc_target target) noexcept {
-	if (target == cc_target::library) {
-		return text::substitution_template::render(cc_build_lib_tpl, std::move(vm));
-	}
-	return text::substitution_template::render(cc_build_bin_tpl, std::move(vm));
+	return text::substitution_template::render(cc_build_template(target), std::move(vm));
 }
 
 void cc_build(
@@ -57,5 +54,12 @@ void cc_build(
 	auto ofile = std::ofstream(path.begin());
 	ofile << rendered_template;
 	ofile.close();
+}
+
+std::string_view cc_build_template(cc_target target) noexcept {
+	if (target == cc_target::library) {
+		return cc_build_lib_tpl;
+	}
+	return cc_build_bin_tpl;
 }
 } // namespace in::generate

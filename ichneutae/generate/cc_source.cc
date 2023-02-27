@@ -26,10 +26,7 @@ std::string cc_source(
 	text::substitution_template::value_map&& vm,
 	const cc_target target
 ) noexcept {
-	if (target == cc_target::library) {
-		return text::substitution_template::render(cc_source_lib_tpl, std::move(vm));
-	}
-	return text::substitution_template::render(cc_source_bin_tpl, std::move(vm));
+	return text::substitution_template::render(cc_source_template(target), std::move(vm));
 }
 
 void cc_source(
@@ -41,5 +38,12 @@ void cc_source(
 	auto rendered_template = cc_source(std::move(vm), target);
 	ofile << rendered_template;
 	ofile.close();
+}
+
+std::string_view cc_source_template(cc_target target) noexcept {
+	if (target == cc_target::library) {
+		return cc_source_lib_tpl;
+	}
+	return cc_source_bin_tpl;
 }
 } // namespace in::generate
