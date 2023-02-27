@@ -9,6 +9,8 @@ constexpr std::string_view code_to_string_view(result_code code) noexcept {
 		return "invalid argument";
 	case result_code::failed_precondition:
 		return "failed_precondition";
+	case result_code::not_found:
+		return "not_found";
 	case result_code::unknown:
 	default:
 		return "unknown";
@@ -62,6 +64,13 @@ result failed_precondition(const std::string& msg) noexcept {
 	return {
 		result_code::failed_precondition,
 		code_to_string(result_code::failed_precondition) + ": " + msg,
+	};
+}
+
+result not_found(std::string_view msg) noexcept {
+	return {
+		result_code::not_found,
+		code_to_string(result_code::not_found) + ": " + std::string(msg),
 	};
 }
 

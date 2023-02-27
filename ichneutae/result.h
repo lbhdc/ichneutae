@@ -13,6 +13,7 @@ enum class result_code : int {
 	unknown = 1,
 	invalid_argument = 2,
 	failed_precondition = 3,
+	not_found = 4,
 };
 
 // result_payload holds the error details in a result
@@ -64,6 +65,8 @@ public:
 [[nodiscard]] result invalid_argument(const std::string& msg) noexcept;
 
 [[nodiscard]] result failed_precondition(const std::string& msg) noexcept;
+
+[[nodiscard]] result not_found(std::string_view) noexcept;
 
 [[nodiscard]] result unknown() noexcept;
 

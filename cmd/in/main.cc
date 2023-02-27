@@ -1,8 +1,12 @@
 #include "ichneutae/flag/parser.h"
+#include "ichneutae/text/search.h"
 #include "ichneutae/version.h"
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 
 const auto version = in::flag::boolean("version", false, "Print the program version");
+const auto haystack = in::flag::string("haystack", "", "The root directory to search");
 
 int main(int argc, char* argv[]) {
 	in::flag::parse(argc, argv);
@@ -10,5 +14,30 @@ int main(int argc, char* argv[]) {
 		std::cout << in::flag::executable_name() << ' ' << in::version << '\n';
 		std::exit(EXIT_SUCCESS);
 	}
-	std::cout << "works\n";
+	std::string needle;
+	if (in::flag::nargs() >= 1) {
+		needle = in::flag::argv().front();
+		// if an explicit dir root wasn't give and two arguments were passed use the second arg. If
+		// neither were passed use the current working directory.
+		if (in::flag::nargs() == 2 and haystack->empty()) {
+			*haystack = in::flag::argv().back();
+		} else if (haystack->empty()) {
+			*haystack = std::filesystem::current_path().string();
+		}
+	} else {
+		std::cerr << "un-recognized arguments\n";
+		std::exit(EXIT_FAILURE);
+	}
+	for (const auto& path : std::filesystem::recursive_directory_iterator(
+				 *haystack,
+				 std::filesystem::directory_options::skip_permission_denied
+			 )) {
+		if (not path.is_directory()) {
+			auto input = std::ifstream(path.path());
+			for (auto match : in::text::search(input, needle)) {
+				std::cout << match.row << ':' << match.column << ' ' << path.path().string() << '\n'
+									<< match.data << "\n\n";
+			}
+		}
+	}
 }

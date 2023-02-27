@@ -25,6 +25,17 @@ cc_library(
 )
 
 cc_library(
+    name = "search",
+    srcs = ["search.cc"],
+    hdrs = ["search.h"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//ichneutae:result_or",
+        "//ichneutae/async:generator",
+    ],
+)
+
+cc_library(
     name = "substitution_template",
     srcs = ["substitution_template.cc"],
     hdrs = ["substitution_template.h"],
@@ -49,6 +60,7 @@ cc_test(
         "case_test.cc",
         "contains_test.cc",
         "replace_all_test.cc",
+        "search_test.cc",
         "substitution_template_test.cc",
         "trim_test.cc",
     ],
@@ -57,6 +69,7 @@ cc_test(
         ":contains",
         ":remove_all",
         ":replace_all",
+        ":search",
         ":substitution_template",
         ":trim",
         "@com_google_googletest//:gtest_main",
