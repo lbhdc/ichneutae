@@ -20,7 +20,8 @@ cc_test(
 )";
 
 inline constexpr std::string_view cc_build_bin_tpl =
-	R"(load("//build:crosscompile.bzl", "crosscompile")
+	R"(load("//build:crosscompile.bzl", "crosscompile", "PLATFORMS")
+load("@com_github_google_rules_install//installer:def.bzl", "installer")
 
 cc_binary(
     name = "{{DIR_NAME}}",
@@ -32,14 +33,12 @@ cc_binary(
     ],
 )
 
-# supported platforms
-PLATFORMS = [
-    "@aspect_gcc_toolchain//platforms:aarch64_linux",
-    "@aspect_gcc_toolchain//platforms:armv7_linux",
-    "@aspect_gcc_toolchain//platforms:x86_64_linux",
-]
+installer(
+    name = "install_{{DIR_NAME}}",
+    data = [":{{DIR_NAME}}"],
+)
 
-[crosscompile(":in", platform) for platform in PLATFORMS]
+[crosscompile(":{{DIR_NAME}}", platform) for platform in PLATFORMS]
 )";
 
 std::string cc_build(text::substitution_template::value_map&& vm, const cc_target target) noexcept {
@@ -54,8 +53,8 @@ void cc_build(
 	text::substitution_template::value_map&& vm,
 	const cc_target target
 ) noexcept {
+	const auto rendered_template = cc_build(std::move(vm), target);
 	auto ofile = std::ofstream(path.begin());
-	auto rendered_template = cc_build(std::move(vm), target);
 	ofile << rendered_template;
 	ofile.close();
 }

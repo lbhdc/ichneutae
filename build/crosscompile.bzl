@@ -1,6 +1,13 @@
 load("@aspect_bazel_lib//lib:transitions.bzl", "platform_transition_filegroup")
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 
+# supported platforms
+PLATFORMS = [
+    "@aspect_gcc_toolchain//platforms:aarch64_linux",
+    "@aspect_gcc_toolchain//platforms:armv7_linux",
+    "@aspect_gcc_toolchain//platforms:x86_64_linux",
+]
+
 def crosscompile(binary, platform):
     name = package_from_label(binary)
     platform_suffix = package_from_label(platform).replace("_linux", "")
