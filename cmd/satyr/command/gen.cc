@@ -6,6 +6,7 @@
 #include "ichneutae/generate/cc_header.h"
 #include "ichneutae/generate/cc_namespace.h"
 #include "ichneutae/generate/cc_source.h"
+#include "ichneutae/generate/cc_tests.h"
 #include "ichneutae/os/path.h"
 #include <iostream>
 
@@ -67,6 +68,14 @@ void gen(std::string* workspace_dir, const bool* bin, std::span<std::string> cmd
 			target
 		);
 	};
+	const auto gen_cc_tests = [&] {
+		const auto path = in::os::join(workspace, label.directory, label.target + "_test.cc");
+		in::generate::cc_header(
+			path,
+			{{"{{HEADER_FILE_PATH}}", in::os::join(label.directory, label.target + ".h")},
+			 {"{{DIR_NAME}}", in::os::file_name(label.directory)}}
+		);
+	};
 	// mux action and execute code generators
 	if ("cc-build" == action) {
 		gen_cc_build();
@@ -77,10 +86,14 @@ void gen(std::string* workspace_dir, const bool* bin, std::span<std::string> cmd
 	} else if ("cc-source" == action) {
 		gen_cc_source();
 		std::exit(EXIT_SUCCESS);
+	} else if ("cc-tests" == action) {
+		gen_cc_tests();
+		std::exit(EXIT_SUCCESS);
 	} else if ("cc-pkg" == action) {
 		gen_cc_build();
 		gen_cc_header();
 		gen_cc_source();
+		gen_cc_tests();
 		std::exit(EXIT_SUCCESS);
 	}
 	std::cerr << "gen unknown action; got = '" << action << '\'';

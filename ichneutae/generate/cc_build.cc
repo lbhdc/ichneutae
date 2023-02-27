@@ -11,7 +11,7 @@ inline constexpr std::string_view cc_build_lib_tpl = R"(cc_library(
 cc_test(
     name = "{{DIR_NAME}}_test",
     size = "small",
-    srcs = ["{{NAME}}.cc"],
+    srcs = ["{{NAME}}_test.cc"],
     deps = [
         ":{{NAME}}",
         "@com_google_googletest//:gtest_main",

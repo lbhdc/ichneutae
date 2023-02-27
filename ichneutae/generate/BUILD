@@ -60,6 +60,13 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "cc_tests",
+    srcs = ["cc_tests.cc"],
+    hdrs = ["cc_tests.h"],
+    visibility = ["//visibility:public"],
+)
+
 cc_test(
     name = "generate_test",
     size = "small",
