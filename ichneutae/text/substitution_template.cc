@@ -27,6 +27,23 @@ std::string substitution_template::execute(std::istream& input, value_map&& extr
 	return rendered_template.substr(0, rendered_template.size() - 1);
 }
 
+void substitution_template::render(std::istream& input, std::ostream& output) const noexcept {
+	output << this->execute(input);
+}
+
+void substitution_template::render(std::string_view template_str, std::ostream& output)
+	const noexcept {
+	auto input = std::istringstream(template_str.begin());
+	output << this->execute(input);
+}
+
+void substitution_template::render(std::string_view template_str, std::string_view output_path)
+	const noexcept {
+	auto ofile = std::ofstream(output_path.begin());
+	this->render(template_str, ofile);
+	ofile.close();
+}
+
 std::string substitution_template::render(
 	std::istream& input,
 	substitution_template::value_map&& vm

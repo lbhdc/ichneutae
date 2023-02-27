@@ -32,12 +32,26 @@ struct substitution_template {
 
 	~substitution_template() = default;
 
+	/// execute reads in a template and compiles it using the templates pre-declared variables
 	[[nodiscard]] std::string execute(std::istream& input) const noexcept;
 
+	/// execute reads in a template and compiles it using the templates pre-declared variables and
+	/// extra variables passed in.
 	[[nodiscard]] std::string execute(std::istream& input, value_map&& extra_args) const noexcept;
 
+	/// render reads in a template, executes it and writes it to an output stream
+	void render(std::istream& input, std::ostream& output) const noexcept;
+
+	/// render a template from memory and write it to an output stream
+	void render(std::string_view template_str, std::ostream& output) const noexcept;
+
+	/// render reads a template from memory and writes it to a file at a given path
+	void render(std::string_view template_str, std::string_view output_path) const noexcept;
+
+	/// render a template from an input stream using the given variable
 	[[nodiscard]] static std::string render(std::istream& input, value_map&& vm) noexcept;
 
+	/// render a template from a string using the given variable
 	[[nodiscard]] static std::string render(std::string_view tpl, value_map&& vm) noexcept;
 };
 } // namespace in::text
