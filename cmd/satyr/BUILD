@@ -6,16 +6,9 @@ cc_binary(
     srcs = ["main.cc"],
     features = ["static_libstdcxx"],
     deps = [
+        "//cmd/satyr/command:gen",
         "//ichneutae:version",
-        "//ichneutae/bazel:label",
-        "//ichneutae/bazel:workspace",
         "//ichneutae/flag:parser",
-        "//ichneutae/generate:cc_build",
-        "//ichneutae/generate:cc_guards",
-        "//ichneutae/generate:cc_header",
-        "//ichneutae/generate:cc_namespace",
-        "//ichneutae/generate:cc_source",
-        "//ichneutae/os:path",
     ],
 )
 
